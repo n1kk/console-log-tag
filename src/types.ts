@@ -1,7 +1,7 @@
 import { taggedLogger } from "./logger";
 
 export type LogTag = [text: string, style: string];
-export type LogTagStyle = Partial<Record<ConsoleAllowedCssProps | string, string>>;
+export type LogTagStyle = Partial<Record<ConsoleAllowedCssProps, string>>;
 
 export type TaggedLogger = {
     (...args: any[]): void;

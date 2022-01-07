@@ -1,8 +1,8 @@
 [//]: # "![demo](assets/demo2.gif)"
 
 <p align="center">
-  <img src="assets/headline2.png">
-  <img src="assets/headline3.png">
+  <img src="https://github.com/n1kk/log-tags/blob/master/assets/headline2.png?raw=true">
+  <img src="https://github.com/n1kk/log-tags/blob/master/assets/headline3.png?raw=true">
 </p>
 
 ---
@@ -11,9 +11,9 @@
 
 Set of tools that help to add color tags to your console logs.
 
-Typescript, es module, configurable, tree-shakable. [Generated typedoc reference](https://github.com/n1kk/console-log-tag).
+Typescript, es module, configurable, tree-shakable. [Generated typedoc reference](https://n1kk.github.io/log-tags/modules.html).
 
-![demo](assets/demo.gif)
+![demo](https://github.com/n1kk/log-tags/blob/master/assets/demo.gif?raw=true)
 
 ## Install
 

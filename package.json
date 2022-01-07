@@ -1,6 +1,6 @@
 {
   "name": "log-tags",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Color tags for devtools console.log",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
