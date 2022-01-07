@@ -1,5 +1,3 @@
-[//]: # "![demo](assets/demo2.gif)"
-
 <p align="center">
   <img src="https://github.com/n1kk/log-tags/blob/master/assets/headline2.png?raw=true">
   <img src="https://github.com/n1kk/log-tags/blob/master/assets/headline3.png?raw=true">
@@ -57,7 +55,7 @@ const allTags = mergeTags(logtag("tag-1"), logtag("tag-2"));
 console.log(...allTags, "completed"); // [tag-1] [tag-2] completed
 ```
 
-`logtag` accepst a hex bg color or a CSS object as a second argument. If color is not passed then a unique color is generated for the string, the color is not random and is going to be the same for the same string, so even after app restart tags with same name will have same color. The color of the text is selected automatically based on the biggest contrast with background color. See Typedoc reference for signatures. CSS object allows configuring tags appearance, see allowed css fields in [MDN docs](https://developer.mozilla.org/en-US/docs/Web/API/console#outputting_text_to_the_console) and in [typedoc declarations](https://github.com/n1kk/console-log-tag).
+`logtag` accepts a hex bg color or a CSS object as a second argument. If color is not passed then a unique color is generated for the string, the color is not random and is going to be the same for the same string, so even after app restart tags with same name will have same color. The color of the text is selected automatically based on the biggest contrast with background color. See Typedoc reference for signatures. CSS object allows configuring tags appearance, see allowed css fields in [MDN docs](https://developer.mozilla.org/en-US/docs/Web/API/console#outputting_text_to_the_console).
 
 #### Caveats
 
