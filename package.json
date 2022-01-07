@@ -1,0 +1,39 @@
+{
+  "name": "log-tags",
+  "version": "0.1.0",
+  "description": "Color tags for devtools console.log",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": "github:n1kk/console-log-tag",
+  "homepage": "https://github.com/n1kk/console-log-tag",
+  "files": [
+    "dist/**/*.{js,ts}"
+  ],
+  "keywords": [
+    "console",
+    "log",
+    "tag",
+    "tags",
+    "marker",
+    "tracer"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "rimraf dist && tsc -b tsconfig.json",
+    "docs:build": "typedoc src/index.ts"
+  },
+  "author": "n1kk",
+  "license": "MIT",
+  "dependencies": {
+    "counter-color": "^0.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.2",
+    "prettier": "^2.5.1",
+    "rimraf": "^3.0.2",
+    "typedoc": "^0.22.10",
+    "typedoc-plugin-missing-exports": "^0.22.6",
+    "typescript": "^4.5.4",
+    "vite": "^2.7.6"
+  }
+}
