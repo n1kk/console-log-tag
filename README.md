@@ -33,26 +33,32 @@ import { logtag, taggedLogger, tlog, installTaggedLogger, mergeTags } from "log-
 // you can create a standalone tag
 const appTag = logtag("app");
 // tags need to be spread into console for styles to be picked up
-console.log(...appTag, "starting"); // -> [App] starting
+console.log(...appTag, "starting");
+// -> [App] starting
 // read below for moew info on colors and styles
 
 // you CAN'T use two tags in a console, the styles won't be recognozed
-console.log(...appTag, ...logtag("SubLog"), "initializing"); // [App] %cSubLog {_CSS_STRING_} initializing
+console.log(...appTag, ...logtag("SubLog"), "initializing");
+// -> [App] %cSubLog {_CSS_STRING_} initializing
 
 // you can use supplied 'tlog' utility to merge all the tags into one declaration
-tlog(appTag, logtag("SubLog"), "initializing"); // [App] [SubLog] initializing
+tlog(appTag, logtag("SubLog"), "initializing");
+// -> [App] [SubLog] initializing
 
 // You create a tagged logger.ts
 const systemLog = taggedLogger("System");
-systemLog("loading"); // [System] loading
+systemLog("loading");
+// -> [System] loading
 
 // tagged loggers have internal method to create child loggers
 const subSystemA = systemLog.logger("Subsystem A");
-subSystemA("processing"); // [System] [Subsystem A] processing
+subSystemA("processing");
+// -> [System] [Subsystem A] processing
 
 // if you want to log multiple tags in your own logging library there is a tool to merge tags together
 const allTags = mergeTags(logtag("tag-1"), logtag("tag-2"));
-console.log(...allTags, "completed"); // [tag-1] [tag-2] completed
+console.log(...allTags, "completed");
+// -> [tag-1] [tag-2] completed
 ```
 
 `logtag` accepts a hex bg color or a CSS object as a second argument. If color is not passed then a unique color is generated for the string, the color is not random and is going to be the same for the same string, so even after app restart tags with same name will have same color. The color of the text is selected automatically based on the biggest contrast with background color. See Typedoc reference for signatures. CSS object allows configuring tags appearance, see allowed css fields in [MDN docs](https://developer.mozilla.org/en-US/docs/Web/API/console#outputting_text_to_the_console).
