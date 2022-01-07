@@ -2,6 +2,8 @@ import { LogTag, LogTagStyle } from "./types";
 import counterColor from "counter-color";
 import { cssToStr, randomHexColor, strColorHash } from "./utils";
 
+export function logtag(text: string, bg?: string): LogTag;
+export function logtag(text: string, style?: LogTagStyle): LogTag;
 export function logtag(text: string, styleOrBg?: LogTagStyle | string): LogTag {
     let style =
         typeof styleOrBg === "string"

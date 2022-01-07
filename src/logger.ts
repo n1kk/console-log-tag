@@ -6,7 +6,8 @@ export function tlog(...args: any) {
     console.log(...mergeTags(...args));
 }
 
-export function taggedLogger(text?: string, style?: LogTagStyle | string): TaggedLogger;
+export function taggedLogger(text?: string, bg?: string): TaggedLogger;
+export function taggedLogger(text?: string, style?: LogTagStyle): TaggedLogger;
 export function taggedLogger(...tags: LogTag[]): TaggedLogger;
 export function taggedLogger(...args: [text?: string, style?: LogTagStyle | string] | LogTag[]): TaggedLogger {
     let tags: LogTag[] = [];
@@ -17,9 +18,14 @@ export function taggedLogger(...args: [text?: string, style?: LogTagStyle | stri
             tags.push(arg);
         } else if (isString(arg)) {
             let nextArg = args[i + 1];
-            if (!isTag(nextArg) && (isString(nextArg) || isStyle(nextArg))) {
-                tags.push(logtag(arg, nextArg));
-                i += 1;
+            if (!isTag(nextArg)) {
+                if (isString(nextArg)) {
+                    tags.push(logtag(arg, nextArg));
+                    i += 1;
+                } else if (isStyle(nextArg)) {
+                    tags.push(logtag(arg, nextArg));
+                    i += 1;
+                }
             } else {
                 tags.push(logtag(arg));
             }
