@@ -45,7 +45,7 @@ console.log(...appTag, ...logtag("SubLog"), "initializing");
 tlog(appTag, logtag("SubLog"), "initializing");
 // -> [App] [SubLog] initializing
 
-// You create a tagged logger.ts
+// You create a tagged logger
 const systemLog = taggedLogger("System");
 systemLog("loading");
 // -> [System] loading
