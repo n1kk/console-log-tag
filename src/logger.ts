@@ -27,6 +27,7 @@ export function taggedLogger(text: string, options?: TaggedLoggerOptions): Tagge
     log.childLogger = (text: string, options?: TaggedLoggerOptions) => {
         return taggedLogger(text, {
             ...options,
+            logFn: options?.logFn ?? logFn,
             tags: [...(options?.tags ?? []), ...tags, tag],
         });
     };
