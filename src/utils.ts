@@ -1,9 +1,9 @@
-import { LogTag, LogTagStyle } from "./types";
+import { LogTag } from "./logTag";
 
 export const randomHex = () => ((Math.random() * 16) >> 0).toString(16);
 export const randomHexColor = () => `#${randomHex()}${randomHex()}${randomHex()}`;
 
-export const cssToStr = (css: Record<string, string>) =>
+export const objectToStyleCssString = (css: Record<string, string>) =>
     Object.entries(css)
         .map(_ => _.join(":"))
         .join(";");
@@ -21,40 +21,21 @@ export const strColorHash = (s: string) => {
     return hex;
 };
 
-export function mergeTags(...args: any[]) {
-    let tagStr = "";
-    const tagStyles = [];
-    const logArgs = [];
+export type CombinedLogTags = [tags: string, ...styles: string[]];
 
-    for (let i = 0; i < args.length; i++) {
-        const arg = args[i];
-        if (isStyledText(arg)) {
-            tagStr += arg;
-            tagStyles.push(args[i + 1]);
-            i++;
-        } else if (isTag(arg)) {
-            tagStr += arg[0];
-            tagStyles.push(arg[1]);
-        } else {
-            logArgs.push(arg);
-        }
-    }
+export function combineLogTags(...tags: LogTag[] | [tags: LogTag[]]): CombinedLogTags {
+    const tagList = (isLogTag(tags[0]) ? tags : tags[0]) as LogTag[];
 
-    return [tagStr, ...tagStyles, ...logArgs];
-}
+    const tagStr = tagList.map(([text]) => text).join("");
+    const tagStyles = tagList.map(([, style]) => style);
 
-export function isTag(value: any): value is LogTag {
-    return value && Array.isArray(value) && isStyledText(value[0]);
+    return [tagStr, ...tagStyles];
 }
 
 export function isStyledText(value: any): value is string {
     return typeof value === "string" && value.startsWith("%c");
 }
 
-export function isString(value: any): value is string {
-    return value && typeof value === "string";
-}
-
-export function isStyle(value: any): value is LogTagStyle {
-    return value && typeof value === "object";
+export function isLogTag(target: any): target is LogTag {
+    return target && Array.isArray(target) && isStyledText(target[0]) && typeof target[1] === "string";
 }

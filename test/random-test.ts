@@ -1,5 +1,5 @@
-import { logtag, tlog } from "../src";
-import { arrOf, word } from "./test-utils";
+import { logTag } from "../src";
+import { arrOf, tlog, word } from "./test-utils";
 
 console.clear();
 
@@ -12,7 +12,7 @@ const data: [name: string, text: string][] = [
 ];
 
 data.forEach(([name, text]) => {
-    tlog(logtag(name), text);
+    tlog(logTag(name), text);
 });
 
 // tlog(logtag("asdasd"));

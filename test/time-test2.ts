@@ -1,9 +1,9 @@
-import { arrOf } from "./test-utils";
-import { logtag, tlog } from "../src";
+import { arrOf, tlog } from "./test-utils";
+import { logTag } from "../src";
 
 console.clear();
 
-const t = (t: string, c?: string, b?: string) => logtag(t, { background: c, border: b });
+const t = (t: string, c?: string, b?: string) => logTag(t, { background: c, border: b });
 
 const colors: string[] = [
     //
@@ -31,22 +31,22 @@ const colors2: string[] = [
     "#FF9292",
 ];
 
-arrOf(100, i => console.log(i));
+// arrOf(100, i => console.log(i));
 
 async function run() {
     // await delay(1000);
 
     const words = "Add some color tags to your console logs !".split(" ");
-    const tags = words.map((w, i) => logtag(w, colors[i]));
+    const tags = words.map((w, i) => logTag(w, colors[i]));
 
     tlog(...tags);
 
     const words2 = "App Auth Config Catalog Command System Service Proxy Context".split(" ");
-    const tags2 = words2.map((w, i) => logtag(w, colors2[i]));
+    const tags2 = words2.map((w, i) => logTag(w, colors2[i]));
 
     tlog(...tags2);
 
-    const appTag = logtag("app");
+    const appTag = logTag("app");
     console.log(...appTag, "starting");
 }
 

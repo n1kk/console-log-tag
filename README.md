@@ -21,47 +21,94 @@ npm install log-tags
 # with yarn
 yarn add log-tags
 # with pnpm
-pnpm i log-tags
+pnpm add log-tags
 ```
+
+## Feature list
+
+- Preconfigured default styles
+- Automatic background color generation based on tag name (same name will give same color)
+- Automatic text color selection (black/white) based on which one will be more readable for a given background
+- Ability to install tag support for global console methods
+- Simple extendable tagged logger supplied
 
 ## Usage
 
 ```ts
-// import what you need from the package
-import { logtag, taggedLogger, tlog, installTaggedLogger, mergeTags } from "log-tags";
+// creating single tag
+const app = logTag("app"); // will pick color unique to 'app' string
+const err = logTag("err", "red"); // will auto-detect what text color has more contrast with background
+const red2 = logTag("also-red", "#F00");
+const custom = logTag("yellow-pill", {
+    // limited css properties suported: https://developer.mozilla.org/en-US/docs/Web/API/console#styling_console_output
+    background: "#f3d411",
+    "border-radius": "10px",
+    "box-shadow": "1px 1px 5px grey",
+});
 
-// you can create a standalone tag
-const appTag = logtag("app");
 // tags need to be spread into console for styles to be picked up
-console.log(...appTag, "starting");
+console.log(...app, "starting");
 // -> [App] starting
-// read below for moew info on colors and styles
 
-// you CAN'T use two tags in a console, the styles won't be recognozed
-console.log(...appTag, ...logtag("SubLog"), "initializing");
+// by default, you CAN'T use two tags in a console, the styles won't be recognized
+console.log(...app, ...err, "oops!");
 // -> [App] %cSubLog {_CSS_STRING_} initializing
 
-// you can use supplied 'tlog' utility to merge all the tags into one declaration
-tlog(appTag, logtag("SubLog"), "initializing");
-// -> [App] [SubLog] initializing
+// creating multi-tags
+const multi = logTags(["first"], ["second"]);
+const colored = logTags(["A", "blue"], ["B", "#F80"]);
+const styled = logTags(["A", { background: "#FF8" }], ["B", { "border-radius": "10px" }]);
 
-// You create a tagged logger.ts
-const systemLog = taggedLogger("System");
+console.log(...multi, "initializing");
+// -> [first] [second] initializing
+```
+
+## Adding tag support to `console`
+
+You can use supplied util to patch global console methods to support tags. All tags in arguments then are auto-detected, moved to the front and merged.
+
+```ts
+useLogTagsInConsole(); // patches all console text output methods
+useLogTagsInConsole(["log"]); // patches only 'log' method
+
+const app = logTag("app")
+console.log(app, "starting");
+// -> [App] starting
+
+console.debug(logTag("first"), logTag("second"), "loading");
+// -> [first] [second] loading
+
+console.info(logTag("one"), "lorem", logTag("two"), "ipsum");
+// -> [one] [two] lorem ipsum
+```
+
+## Tagged Logger
+
+This package provides a simple logging utility that supports extending logger with child sub instances.
+
+```ts
+// You can create a tagged logger
+const systemLog = taggedLogger("System", { logFn: console.debug });
 systemLog("loading");
 // -> [System] loading
 
 // tagged loggers have internal method to create child loggers
-const subSystemA = systemLog.logger("Subsystem A");
+const subSystemA = systemLog.childLogger("Subsystem A");
 subSystemA("processing");
 // -> [System] [Subsystem A] processing
 
-// if you want to log multiple tags in your own logging library there is a tool to merge tags together
-const allTags = mergeTags(logtag("tag-1"), logtag("tag-2"));
-console.log(...allTags, "completed");
+// if you want to log multiple tags in your own logging library
+// there is a tool to merge tags together
+const myLogger = console.debug;
+const mergedTags = mergeTagsInArgs([logTag("tag-1"), logTag("tag-2")]);
+myLogger(...mergedTags, "completed");
 // -> [tag-1] [tag-2] completed
-```
 
-`logtag` accepts a hex bg color or a CSS object as a second argument. If color is not passed then a unique color is generated for the string, the color is not random and is going to be the same for the same string, so even after app restart tags with same name will have same color. The color of the text is selected automatically based on the biggest contrast with background color. See Typedoc reference for signatures. CSS object allows configuring tags appearance, see allowed css fields in [MDN docs](https://developer.mozilla.org/en-US/docs/Web/API/console#outputting_text_to_the_console).
+// or convert your logger to support tags, it'll move tags in any
+// position to front and merge them
+const myLogger2 = mergeTagsInArgs(console.debug);
+myLogger2(logTag("tag-1"), logTag("tag-2"), "completed");
+```
 
 #### Caveats
 

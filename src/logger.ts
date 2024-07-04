@@ -1,43 +1,35 @@
-import { isString, isStyle, isTag, mergeTags } from "./utils";
-import { LogTag, LogTagStyle, TaggedLogger } from "./types";
-import { logtag } from "./logtag";
+import { combineLogTags } from "./utils";
+import { LogTagStyleObject } from "./types";
+import { LogTag, logTag } from "./logTag";
 
-export function tlog(...args: any) {
-    console.log(...mergeTags(...args));
-}
+type TaggedLoggerOptions = {
+    bg?: string;
+    style?: LogTagStyleObject;
+    logFn?: (...args: any[]) => void;
+    tags?: LogTag[];
+};
 
-export function taggedLogger(text?: string, bg?: string): TaggedLogger;
-export function taggedLogger(text?: string, style?: LogTagStyle): TaggedLogger;
-export function taggedLogger(...tags: LogTag[]): TaggedLogger;
-export function taggedLogger(...args: [text?: string, style?: LogTagStyle | string] | LogTag[]): TaggedLogger {
-    let tags: LogTag[] = [];
+type TaggedLogger = {
+    (...args: any[]): void;
+    childLogger: typeof taggedLogger;
+};
 
-    for (let i = 0; i < args.length; i++) {
-        const arg = args[i];
-        if (isTag(arg)) {
-            tags.push(arg);
-        } else if (isString(arg)) {
-            let nextArg = args[i + 1];
-            if (!isTag(nextArg)) {
-                if (isString(nextArg)) {
-                    tags.push(logtag(arg, nextArg));
-                    i += 1;
-                } else if (isStyle(nextArg)) {
-                    tags.push(logtag(arg, nextArg));
-                    i += 1;
-                }
-            } else {
-                tags.push(logtag(arg));
-            }
-        }
-    }
+export function taggedLogger(text: string, options?: TaggedLoggerOptions): TaggedLogger {
+    const { bg, style, logFn = console.log, tags = [] } = options ?? {};
 
-    let log: TaggedLogger = console.log.bind(console, ...mergeTags(...tags)) as TaggedLogger;
+    const tag: LogTag = logTag(text, style ?? bg);
+    const combinedTags = combineLogTags(...tags, tag);
 
-    Object.defineProperty(log, "logger", {
-        writable: false,
-        value: taggedLogger.bind(null, ...tags),
-    });
+    const log = function (this: any, ...args: unknown[]) {
+        logFn.call(this, ...combinedTags, ...args);
+    } as TaggedLogger;
+
+    log.childLogger = (text: string, options?: TaggedLoggerOptions) => {
+        return taggedLogger(text, {
+            ...options,
+            tags: [...(options?.tags ?? []), ...tags, tag],
+        });
+    };
 
     return log;
 }

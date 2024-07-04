@@ -1,3 +1,5 @@
+import { mergeTagsInArgs } from "../src";
+
 export const arrOf = (n: number, init: (index: number) => any = _ => _) => {
     return Array.from({ length: n }, (v, i) => init(i));
 };
@@ -22,3 +24,5 @@ export const delay = async (n: number) =>
     new Promise(res => {
         setTimeout(res, n);
     });
+
+export const tlog = (...args: any[]) => console.log(...mergeTagsInArgs(args));

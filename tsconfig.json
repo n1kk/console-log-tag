@@ -16,6 +16,6 @@
     "removeComments": true,
     "declaration": true
   },
-  "include": ["src/**/*.ts", "**/*.tsx"],
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]
 }

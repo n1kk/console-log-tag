@@ -1,13 +1,6 @@
-import { taggedLogger } from "./logger";
+export type LogTagStyleObject = { [key in ConsoleAllowedCssProps]?: string };
 
-export type LogTag = [text: string, style: string];
-export type LogTagStyle = Partial<Record<ConsoleAllowedCssProps, string>>;
-
-export type TaggedLogger = {
-    (...args: any[]): void;
-    readonly logger: typeof taggedLogger;
-};
-
+// https://developer.mozilla.org/en-US/docs/Web/API/console#styling_console_output
 export type ConsoleAllowedCssProps =
     | "background"
     | "background-attachment"
