@@ -20,7 +20,8 @@
   "scripts": {
     "dev": "vite",
     "build": "rimraf dist && tsc -b tsconfig.json",
-    "docs": "typedoc src/index.ts"
+    "docs": "typedoc src/index.ts",
+    "prepublish": "pnpm build"
   },
   "author": "n1kk",
   "license": "MIT",
